@@ -1,0 +1,97 @@
+<template>
+  <v-toolbar fixed>
+    <v-toolbar-title v-if="isLoggedIn">
+      <router-link to="/">Tweet Now</router-link>
+    </v-toolbar-title>
+    <v-spacer></v-spacer>
+    <v-toolbar-items class="hidden-sm-and-down">
+      <v-btn flat v-if="isLoggedIn">
+        <router-link to="/">
+        
+          <span v-for="userDetail in userDetails" :key="userDetail.userEmail">
+            <span v-if="userDetail.userEmail == currentUser">
+               <v-avatar class="imagealign">
+              <v-img :src="userDetail.userPic" class="image-res imagealign"></v-img>
+               </v-avatar>
+            </span>
+          </span>
+          <span>{{currentUser}}</span>
+        </router-link>
+      </v-btn>
+
+      <v-btn flat v-if="isLoggedIn">
+        <router-link to="addblog"> Add Tweet</router-link>
+      </v-btn>
+
+      <v-btn flat v-if="!isLoggedIn">
+        <router-link to="login">login</router-link>
+      </v-btn>
+      <v-btn flat v-if="!isLoggedIn">
+        <router-link to="registration">registration</router-link>
+      </v-btn>
+      <v-btn flat @click="logout" v-if="isLoggedIn">Logout</v-btn>
+    </v-toolbar-items>
+     <v-card-actions>
+        <v-icon dark>fas fa-edit</v-icon>
+
+     </v-card-actions>
+  </v-toolbar>
+</template>
+<script>
+import { fb, db } from "../db/index";
+import firebase from "firebase";
+import "../components/aboutus";
+export default {
+  data() {
+    return {
+      isLoggedIn: false,
+      currentUser: false,
+      userDetails: []
+    };
+  },
+  created() {
+    if (firebase.auth().currentUser) {
+      this.isLoggedIn = true;
+      this.currentUser = firebase.auth().currentUser.email;
+    }
+    db.collection("products")
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          console.log(doc.data());
+          this.products.push(doc.data());
+        });
+      });
+    db.collection("userDetails")
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          console.log(doc.data());
+          this.userDetails.push(doc.data());
+        });
+      });
+    if (firebase.auth().currentUser) {
+      this.isLoggedIn = true;
+      this.currentUser = firebase.auth().currentUser.email;
+    }
+  },
+  methods: {
+    logout: function() {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          this.$router.go({ path: this.$router.path });
+        });
+    }
+  }
+};
+</script>
+<style scoped>
+.v-btn .router-link-exact-active {
+  color: red;
+}
+.imagealign{
+  margin-right: 10px;
+}
+</style>
