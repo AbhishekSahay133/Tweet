@@ -1,8 +1,5 @@
 <template>
-  <div>
-    <input type="file" @change="uploadimage" class="form-control">
-    <img :src="image">
-  </div>
+ 
 </template>
 
 <script>

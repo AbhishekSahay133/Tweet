@@ -57,6 +57,16 @@
                     required
                     v-model="addProductData.Times"
                   ></v-text-field>
+                   <v-text-field
+                    prepend-icon="person"
+                    name="Title"
+                    label="Time"
+                    type="text"
+                    disabled
+                  
+                    required
+                    v-model="addProductData.datetime"
+                  ></v-text-field>
  <v-text-field
                     prepend-icon="person"
                     name="Email"
@@ -137,12 +147,13 @@ export default {
 
   data() {
     return {
-      	
+      	orderby:'',
        uploading: false,
       uploadEnd: false,
        progress: 0,
       products: [],
       addProductData: {
+         datetime: new Date().toUTCString(),
         imagepath: "",
         userName: "",
         name: "",

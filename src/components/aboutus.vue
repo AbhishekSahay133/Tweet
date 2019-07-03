@@ -40,9 +40,12 @@
           
           <v-card-actions>
             <v-spacer></v-spacer>
+           
             <v-btn flat icon color="blue lighten-2" @click="countlike+=1">
               <v-icon>thumb_up</v-icon>
-            </v-btn><span class="alignli">{{ countlike }}</span>
+            </v-btn>
+          
+            <span class="alignli">{{ countlike }}</span>
             <v-btn flat icon color="red lighten-2" @click="countdislike+=1">
               <v-icon>thumb_down</v-icon>
             </v-btn><span class="alignli">{{ countdislike }}</span>
@@ -54,7 +57,7 @@
       </v-flex>
     </v-layout>
 
-    <div></div>
+   
   </div>
 </template>
 
@@ -66,7 +69,7 @@ export default {
     return {
        countlike: 0,
        countdislike: 0,
-      id:0,
+    
       userDetails: [],
       products: [],
       show: false,
@@ -81,6 +84,7 @@ export default {
   created() {
     
     db.collection("products")
+.orderBy("datetime", "desc")
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
